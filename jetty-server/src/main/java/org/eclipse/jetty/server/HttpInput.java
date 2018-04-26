@@ -554,7 +554,11 @@ public class HttpInput extends ServletInputStream implements Runnable
                 {
                     timeout = TimeUnit.NANOSECONDS.toMillis(_blockUntil - System.nanoTime());
                     if (timeout <= 0)
-                        throw new TimeoutException(String.format("Blocking timeout %d ms", getBlockingTimeout()));
+                    {
+                        TimeoutException te = new TimeoutException(String.format("Blocking timeout %d ms", getBlockingTimeout()));
+                        getHttpChannelState().getHttpChannel().getHttpTransport().abort(te);
+                        throw te;
+                    }
                 }
 
                 // This method is called from a loop, so we just

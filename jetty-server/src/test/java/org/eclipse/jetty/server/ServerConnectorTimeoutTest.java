@@ -200,7 +200,7 @@ public class ServerConnectorTimeoutTest extends ConnectorTimeoutTest
             requestFuture.get(2, TimeUnit.SECONDS);
             responseFuture.get(3, TimeUnit.SECONDS);
         
-            Assert.assertThat(response.toString(), Matchers.containsString(" 500 "));
+            Assert.assertThat(response.toString(), Matchers.not(Matchers.containsString(" 200 ")));
             Assert.assertThat(response.toString(), Matchers.not(Matchers.containsString("=========")));
         }
     }
